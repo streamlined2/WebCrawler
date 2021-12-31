@@ -1,5 +1,6 @@
 package org.training.campus.webcrawler.data;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class UrlCollection implements Iterable<UrlEntry> {
 
-	private final Map<String, UrlEntry> map;
+	private final Map<URL, UrlEntry> map;
 
 	public UrlCollection() {
 		map = new HashMap<>();

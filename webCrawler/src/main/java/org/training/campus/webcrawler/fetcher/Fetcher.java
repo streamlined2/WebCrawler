@@ -1,7 +1,8 @@
 package org.training.campus.webcrawler.fetcher;
 
 import java.io.IOException;
-import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -20,8 +21,8 @@ public class Fetcher {
 				.connectTimeout(HTTP_TIMEOUT).build();
 	}
 
-	public HttpResponse<String> fetch(String url) throws IOException, InterruptedException {
-		HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url)).setHeader("User-Agent", "WebCrawler")
+	public HttpResponse<String> fetch(URL url) throws IOException, InterruptedException, URISyntaxException {
+		HttpRequest request = HttpRequest.newBuilder().GET().uri(url.toURI()).setHeader("User-Agent", "WebCrawler")
 				.build();
 		return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 	}
