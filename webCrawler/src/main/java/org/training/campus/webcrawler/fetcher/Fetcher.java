@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler;
+package org.training.campus.webcrawler.fetcher;
 
 import java.io.IOException;
 import java.net.URI;
