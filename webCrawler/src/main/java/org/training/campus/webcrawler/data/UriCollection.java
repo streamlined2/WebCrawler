@@ -17,9 +17,9 @@ public class UriCollection implements Iterable<UriEntry> {
 	}
 
 	public boolean add(UriEntry uriEntry) {
-		Objects.requireNonNull(uriEntry, "uri entry shouldn't be null");
-		boolean containsEntry = map.containsKey(uriEntry.uri());
-		map.put(uriEntry.uri(), uriEntry);
+		Objects.requireNonNull(uriEntry, "given uri entry shouldn't be null");
+		boolean containsEntry = map.containsKey(uriEntry.getUri());
+		map.put(uriEntry.getUri(), uriEntry);
 		return !containsEntry;
 	}
 
@@ -38,11 +38,11 @@ public class UriCollection implements Iterable<UriEntry> {
 	}
 
 	public Stream<UriEntry> internalLinksStream(URI baseUri) {
-		return map.values().stream().filter(entry -> sameDomain(entry.uri(), baseUri));
+		return map.values().stream().filter(entry -> sameDomain(entry.getUri(), baseUri));
 	}
 
 	public long externalLinksCount(URI baseUri) {
-		return map.values().stream().filter(entry -> !sameDomain(entry.uri(), baseUri)).count();
+		return map.values().stream().filter(entry -> !sameDomain(entry.getUri(), baseUri)).count();
 	}
 
 }

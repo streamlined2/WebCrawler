@@ -6,30 +6,51 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public record UriEntry(URI uri, int distance, URI parentUri) {
-	
-	public static final Comparator<UriEntry> URI_COMPARATOR = Comparator.comparing(UriEntry::noFragmentUri);
-	public static final Comparator<UriEntry> DISTANCE_COMPARATOR = Comparator.comparing(UriEntry::distance).thenComparing(UriEntry::noFragmentUri);
+public class UriEntry implements Comparable<UriEntry> {
 
-	public UriEntry {
+	public static final Comparator<UriEntry> URI_COMPARATOR = Comparator.comparing(UriEntry::getUri);
+	public static final Comparator<UriEntry> DISTANCE_COMPARATOR = Comparator.comparing(UriEntry::getDistance)
+			.thenComparing(UriEntry::getUri);
+
+	private final URI uri;
+	private final int distance;
+	private final URI parentUri;
+	private long externalLinksCount;
+
+	public UriEntry(URI uri, int distance, URI parentUri) throws URISyntaxException {
 		Objects.requireNonNull(uri, "uri value shouldn't be null");
 		if (distance < 0)
 			throw new IllegalArgumentException("negative distance is wrong value");
-	}
-	
-	public URI noFragmentUri() {
-		try {
-			return new URI(uri().getScheme(),uri.getUserInfo(),uri.getHost(),uri.getPort(),uri.getPath(),uri.getQuery(),"");
-		} catch (URISyntaxException e) {
-			//impossible to occur because given uri() is known to be correct
-		}
-		return null;
+		this.uri = noFragmentUri(uri);
+		this.distance = distance;
+		this.parentUri = parentUri;
 	}
 
-	@Override
-	public String toString() {
-		return new StringJoiner(",", "[", "]").add(String.valueOf(uri)).add(String.valueOf(distance))
-				.add(String.valueOf(parentUri)).toString();
+	public URI getUri() {
+		return uri;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public URI getParentUri() {
+		return parentUri;
+	}
+
+	public long getExternalLinksCount() {
+		return externalLinksCount;
+	}
+
+	public void setExternalLinksCount(long externalLinksCount) {
+		if (externalLinksCount < 0)
+			throw new IllegalArgumentException("negative count of external links is wrong");
+		this.externalLinksCount = externalLinksCount;
+	}
+
+	public static URI noFragmentUri(URI uri) throws URISyntaxException {
+		return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(),
+				null);
 	}
 
 	public static String getDomainName(URI uri) {
@@ -38,6 +59,30 @@ public record UriEntry(URI uri, int distance, URI parentUri) {
 			return domainName.startsWith("www.") ? domainName.substring(4) : domainName;
 		}
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return new StringJoiner(",", "[", "]").add(String.valueOf(uri)).add(String.valueOf(externalLinksCount))
+				.add(String.valueOf(distance)).add(String.valueOf(parentUri)).toString();
+	}
+
+	@Override
+	public int compareTo(UriEntry e) {
+		return uri.compareTo(e.uri);
+	}
+
+	@Override
+	public int hashCode() {
+		return uri.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof UriEntry e) {
+			return compareTo(e) == 0;
+		}
+		return false;
 	}
 
 }
