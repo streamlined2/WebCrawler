@@ -1,22 +1,22 @@
 package org.training.campus.webcrawler;
 
-import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.http.HttpResponse;
-
-import org.training.campus.webcrawler.extractor.LinkExtractor;
-import org.training.campus.webcrawler.fetcher.Fetcher;
+import java.util.SortedSet;
+import org.training.campus.webcrawler.data.UriEntry;
 
 public class Runner {
+	
+	private static final String startPage = "https://www.york.ac.uk/teaching/cws/wws/webpage1.html";
+	private static final int MAX_VISITED_URIS = 300;
 
 	public static void main(String[] args) {
-		
+
 		try {
-			URL pageURL = new URL("https://www.york.ac.uk/teaching/cws/wws/webpage2.html");
-			HttpResponse<String> response = new Fetcher().fetch(pageURL);
-			System.out.println(new LinkExtractor().process(response.body(), 0, pageURL));
-		} catch (IOException | InterruptedException | URISyntaxException e) {
+			var crawler = new Crawler(new URI(startPage), MAX_VISITED_URIS);
+			SortedSet<UriEntry> uriEntries = crawler.process(UriEntry.DISTANCE_COMPARATOR);
+			uriEntries.forEach(System.out::println);
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
