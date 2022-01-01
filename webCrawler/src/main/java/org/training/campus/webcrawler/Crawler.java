@@ -32,7 +32,7 @@ public class Crawler {
 			SortedSet<UriEntry> visitedUris = new TreeSet<>(UriEntry.URI_COMPARATOR);
 			Queue<UriEntry> uriQueue = new LinkedList<>();
 			uriQueue.add(new UriEntry(startUri, 0, null));
-			while (!uriQueue.isEmpty() && visitedUris.size() <= maxVisitedUris) {
+			while (!uriQueue.isEmpty() && visitedUris.size() < maxVisitedUris) {
 				UriEntry uriEntry = uriQueue.poll();
 				if (!visitedUris.contains(uriEntry)) {
 					HttpResponse<String> response = fetcher.fetch(uriEntry.getUri());
