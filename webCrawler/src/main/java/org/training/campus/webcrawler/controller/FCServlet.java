@@ -1,19 +1,14 @@
 package org.training.campus.webcrawler.controller;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.training.campus.webcrawler.collector.Crawler;
-import org.training.campus.webcrawler.collector.data.UriEntry;
-import org.training.campus.webcrawler.service.InfoService;
+import org.training.campus.webcrawler.service.Service;
 import org.training.campus.webcrawler.view.PageGenerator;
 
 public class FCServlet extends HttpServlet {
@@ -26,23 +21,37 @@ public class FCServlet extends HttpServlet {
 
 	protected static final String TEMPLATE_PARAMETERS_ATTRIBUTE = "parameters";
 	protected static final String CONTEXT_PATH_ATTRIBUTE = "context";
-	protected static final String COLLECTED_LINKS_ATTRIBUTE = "collectedLinks";
-	protected static final String DOMAIN_STATISTICAL_INFO_ATTRIBUTE = "domainStatInfo";
+	protected static final String DOMAIN_DATA_ATTRIBUTE = "domainData";
 
 	private static final String DEFAULT_MAX_VISITED_URIS = "10";
-
-	private final Crawler crawler;
-
-	public FCServlet() {
-		crawler = new Crawler();
-	}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
+		initService();
+		initFormParameters();
+	}
+
+	private void initService() {
+		Service.getInstance().init(getServletContext().getInitParameter(JDBC_URL_PARAMETER),
+				getServletContext().getInitParameter(JDBC_USER_PARAMETER),
+				getServletContext().getInitParameter(JDBC_PASSWORD_PARAMETER));
+	}
+
+	private void initFormParameters() {
 		setTemplateParameter(START_PAGE_PARAMETER, getServletContext().getInitParameter(START_PAGE_PARAMETER));
 		setTemplateParameter(MAX_VISITED_URIS_PARAMETER,
 				getServletContext().getInitParameter(MAX_VISITED_URIS_PARAMETER));
+	}
+
+	@Override
+	public void destroy() {
+		destroyService();
+		super.destroy();
+	}
+
+	private void destroyService() {
+		Service.getInstance().close();
 	}
 
 	@Override
@@ -67,17 +76,15 @@ public class FCServlet extends HttpServlet {
 				int maxVisitedUris = Integer
 						.parseInt(getDefaultedParameter(req, MAX_VISITED_URIS_PARAMETER, DEFAULT_MAX_VISITED_URIS));
 
-				SortedSet<UriEntry> uriEntries = crawler.crawl(new URI(startPage), maxVisitedUris);
+				var domainStatisticalInfo = Service.getInstance().collectData(startPage, maxVisitedUris);
+				Service.getInstance().saveData(domainStatisticalInfo);
 
-				setTemplateParameter(COLLECTED_LINKS_ATTRIBUTE,
-						InfoService.sortBy(uriEntries, UriEntry.DISTANCE_COMPARATOR));
-				setTemplateParameter(DOMAIN_STATISTICAL_INFO_ATTRIBUTE,
-						InfoService.collectDomainStatisticalInfo(uriEntries));
+				setTemplateParameter(DOMAIN_DATA_ATTRIBUTE, domainStatisticalInfo);
 				setTemplateParameter(START_PAGE_PARAMETER, startPage);
 				setTemplateParameter(MAX_VISITED_URIS_PARAMETER, String.valueOf(maxVisitedUris));
 			}
 
-		} catch (URISyntaxException | NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			throw new ServletException(e);
 		}
 	}

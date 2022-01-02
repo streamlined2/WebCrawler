@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.collector;
+package org.training.campus.webcrawler.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,10 +8,8 @@ import java.util.Queue;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.training.campus.webcrawler.collector.data.UriCollection;
-import org.training.campus.webcrawler.collector.data.UriEntry;
-import org.training.campus.webcrawler.collector.extractor.LinkExtractor;
-import org.training.campus.webcrawler.collector.fetcher.Fetcher;
+import org.training.campus.webcrawler.service.data.UriCollection;
+import org.training.campus.webcrawler.service.data.UriEntry;
 
 public class Crawler {
 
@@ -23,7 +21,7 @@ public class Crawler {
 		linkExtractor = new LinkExtractor();
 	}
 
-	public SortedSet<UriEntry> crawl(URI startUri, int maxVisitedUris) {
+	public SortedSet<UriEntry> crawl(URI startUri, long maxVisitedUris) {
 		try {
 			SortedSet<UriEntry> visitedUris = new TreeSet<>(UriEntry.URI_COMPARATOR);
 			Queue<UriEntry> uriQueue = new LinkedList<>();

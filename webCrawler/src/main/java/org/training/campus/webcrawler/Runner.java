@@ -13,7 +13,7 @@ public class Runner {
 	private static final String JDBC_URL_PARAMETER = "dbUrl";
 	private static final String JDBC_USER_PARAMETER = "dbUser";
 	private static final String JDBC_PASSWORD_PARAMETER = "dbPassword";
-	private static final String SERVER_PORT_PARAMETER = "dbPort";
+	private static final String SERVER_PORT_PARAMETER = "port";
 
 	public static void main(String[] args) {
 

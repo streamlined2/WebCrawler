@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.collector;
+package org.training.campus.webcrawler.service;
 
 public class NetException extends RuntimeException {
 

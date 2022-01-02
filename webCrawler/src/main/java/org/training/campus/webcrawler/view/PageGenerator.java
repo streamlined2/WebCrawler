@@ -15,14 +15,14 @@ public class PageGenerator {
 	private final Configuration cfg;
 
 	public static PageGenerator instance() {
-		return Holder.INSTANCE;
+		return Holder.instance;
 	}
 
 	private static class Holder {
-		private static final PageGenerator INSTANCE;
+		private static final PageGenerator instance;
 		static {
 			try {
-				INSTANCE = new PageGenerator();
+				instance = new PageGenerator();
 			} catch (Exception e) {
 				throw new InstantiationError(String.format(
 						"can't instantiate page generator because template folder is invalid, %s", e.getMessage()));
@@ -40,7 +40,7 @@ public class PageGenerator {
 		}
 	}
 
-	private PageGenerator() throws IOException {
+	private PageGenerator() {
 		cfg = new Configuration(new Version(2, 3, 31));
 		cfg.setClassForTemplateLoading(getClass(), TEMPLATE_FOLDER);
 	}

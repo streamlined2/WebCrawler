@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.collector.data;
+package org.training.campus.webcrawler.service.data;
 
 import java.net.URI;
 import java.net.URISyntaxException;

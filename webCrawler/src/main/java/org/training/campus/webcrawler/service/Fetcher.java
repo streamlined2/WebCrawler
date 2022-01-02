@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.collector.fetcher;
+package org.training.campus.webcrawler.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,8 +8,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.time.Duration;
-
-import org.training.campus.webcrawler.collector.NetException;
 
 public class Fetcher {
 

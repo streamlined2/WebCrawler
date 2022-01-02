@@ -50,6 +50,18 @@
 		</dependency>
 
 		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.6.3.Final</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>5.6.3.Final</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.22</version>
@@ -92,7 +104,7 @@
 					<appName>${heroku.appName}</appName>
 					<jdkVersion>${maven.compiler.source}</jdkVersion>
 					<processTypes>
-						<web>java $JAVA_OPTS -DdbPort=$PORT -DdbUrl=$JDBC_DATABASE_URL -DdbUser=$JDBC_DATABASE_USERNAME -DdbPassword=$JDBC_DATABASE_PASSWORD -DstartPage="https://www.york.ac.uk/teaching/cws/wws/webpage1.html" -DmaxVisitedUris=300 -jar target/${heroku.appName}.jar</web>
+						<web>java $JAVA_OPTS -Dport=$PORT -DdbUrl=$JDBC_DATABASE_URL -DdbUser=$JDBC_DATABASE_USERNAME -DdbPassword=$JDBC_DATABASE_PASSWORD -DstartPage="https://www.york.ac.uk" -DmaxVisitedUris=100 -jar target/${heroku.appName}.jar</web>
 					</processTypes>
 				</configuration>
 			</plugin>

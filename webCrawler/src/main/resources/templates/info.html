@@ -37,7 +37,7 @@ th, td {
 		</table>
 	</form>
 	<center>
-	<#if domainStatInfo??>
+	<#if domainData??>
 	<table>
 		<caption>
 			<h3>Domain statistical information</h3>
@@ -46,14 +46,16 @@ th, td {
 			<tr>
 				<th>Total count of links</th>
 				<th>Max distance from start page</th>
+				<th>Elapsed time</th>
 				<th>External links total count</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>${domainStatInfo.linkCount()}</td>
-				<td>${domainStatInfo.maxDistance()}</td>
-				<td>${domainStatInfo.externalLinksCount()}</td>
+				<td>${domainData.linkCount()}</td>
+				<td>${domainData.maxDistance()}</td>
+				<td>${domainData.elapsedTime()}</td>
+				<td>${domainData.externalLinksCount()}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -73,7 +75,7 @@ th, td {
 			</tr>
 		</thead>
 		<tbody>
-			<#list collectedLinks as link>
+			<#list domainData.uriEntries() as link>
 			<tr>
 				<td>${link?counter}</td>
 				<td>${link.uri}</td>
