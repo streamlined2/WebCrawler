@@ -92,7 +92,7 @@
 					<appName>${heroku.appName}</appName>
 					<jdkVersion>${maven.compiler.source}</jdkVersion>
 					<processTypes>
-						<web>java $JAVA_OPTS -Dport=$PORT -Durl=$JDBC_DATABASE_URL -Duser=$JDBC_DATABASE_USERNAME -Dpassword=$JDBC_DATABASE_PASSWORD -jar target/${heroku.appName}.jar</web>
+						<web>java $JAVA_OPTS -DdbPort=$PORT -DdbUrl=$JDBC_DATABASE_URL -DdbUser=$JDBC_DATABASE_USERNAME -DdbPassword=$JDBC_DATABASE_PASSWORD -DstartPage="https://www.york.ac.uk/teaching/cws/wws/webpage1.html" -DmaxVisitedUris=300 -jar target/${heroku.appName}.jar</web>
 					</processTypes>
 				</configuration>
 			</plugin>

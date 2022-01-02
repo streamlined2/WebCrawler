@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.extractor;
+package org.training.campus.webcrawler.collector.extractor;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -6,8 +6,8 @@ import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.training.campus.webcrawler.data.UriCollection;
-import org.training.campus.webcrawler.data.UriEntry;
+import org.training.campus.webcrawler.collector.data.UriCollection;
+import org.training.campus.webcrawler.collector.data.UriEntry;
 
 public class LinkExtractor {
 

@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.data;
+package org.training.campus.webcrawler.collector.data;
 
 import java.net.URI;
 import java.util.HashMap;

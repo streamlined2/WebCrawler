@@ -1,0 +1,89 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Collected info</title>
+<style>
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+th, td {
+	padding: 5px;
+}
+</style>
+</head>
+<body>
+	<form>
+		<table>
+			<thead>
+				<tr>
+					<th><label for="startPage">URI</label></th>
+					<th><label for="maxVisitedUris">Max visited URIs</label></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" id="startPage" name="startPage"
+						value="${startPage!""}" placeholder="Enter website start page URI" size="130"
+						pattern="^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\.[a-z]+)?(\/[a-zA-Z0-9#]+)*\/?$"
+						title="Website start page" required /></td>
+					<td><input type="number" id="maxVisitedUris"
+						name="maxVisitedUris" value="${maxVisitedUris!300}"
+						placeholder="Enter max number of visited URIs" min="1" size="15"
+						title="Max visited URIs" required /></td>
+					<td><input type="submit" value="Research" formaction="${context}/" formmethod="post" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<center>
+	<#if domainStatInfo??>
+	<table>
+		<caption>
+			<h3>Domain statistical information</h3>
+		</caption>
+		<thead>
+			<tr>
+				<th>Total count of links</th>
+				<th>Max distance from start page</th>
+				<th>External links total count</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>${domainStatInfo.linkCount()}</td>
+				<td>${domainStatInfo.maxDistance()}</td>
+				<td>${domainStatInfo.externalLinksCount()}</td>
+			</tr>
+		</tbody>
+	</table>
+	</center>
+	<br>
+	<table>
+		<caption>
+			<h3>List of collected links sorted by distance</h3>
+		</caption>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Link</th>
+				<th>Distance from start page</th>
+				<th>Parent link</th>
+				<th>External links count</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list collectedLinks as link>
+			<tr>
+				<td>${link?counter}</td>
+				<td>${link.uri}</td>
+				<td>${link.distance}</td>
+				<td>${link.parentUri!""}</td>
+				<td>${link.externalLinksCount}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	</#if>
+</body>
+</html>

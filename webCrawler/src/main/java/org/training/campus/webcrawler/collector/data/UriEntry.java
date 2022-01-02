@@ -1,4 +1,4 @@
-package org.training.campus.webcrawler.data;
+package org.training.campus.webcrawler.collector.data;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,7 +21,7 @@ public class UriEntry implements Comparable<UriEntry> {
 		Objects.requireNonNull(uri, "uri value shouldn't be null");
 		if (distance < 0)
 			throw new IllegalArgumentException("negative distance is wrong value");
-		this.uri = noFragmentUri(uri);
+		this.uri = strippedUri(uri);
 		this.distance = distance;
 		this.parentUri = parentUri;
 	}
@@ -48,9 +48,13 @@ public class UriEntry implements Comparable<UriEntry> {
 		this.externalLinksCount = externalLinksCount;
 	}
 
-	public static URI noFragmentUri(URI uri) throws URISyntaxException {
-		return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(),
-				null);
+	public static URI strippedUri(URI link) throws URISyntaxException {
+		URI uri = link.normalize();
+		String path = uri.getPath();
+		if (path == null || path.isEmpty()) {
+			path = "/";
+		}
+		return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), path, null, null);
 	}
 
 	public static String getDomainName(URI uri) {
@@ -80,7 +84,7 @@ public class UriEntry implements Comparable<UriEntry> {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof UriEntry e) {
-			return compareTo(e) == 0;
+			return uri.equals(e.uri);
 		}
 		return false;
 	}
