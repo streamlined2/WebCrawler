@@ -33,7 +33,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "id" })
 @ToString
 @Entity
-@Table(name = "research")
+@Table(name = "research", schema = "crawler")
 public class Research implements Serializable {
 
 	@Id

@@ -31,7 +31,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "id" })
 @ToString
 @Entity
-@Table(name = "page")
+@Table(name = "page", schema = "crawler")
 public class Page implements Serializable {
 
 	@Id
